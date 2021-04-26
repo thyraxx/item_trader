@@ -7,6 +7,7 @@ namespace ItemTradeHook
 		
 		Widget@ m_wPlayerList;
 		ScalableSpriteButtonWidget@ m_wPlayerTemplate;
+		array<ActorItem> selectedItems;
 
 		ItemTrade(GUIBuilder@ b)
 		{
