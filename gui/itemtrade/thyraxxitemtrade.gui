@@ -1,0 +1,120 @@
+<gui>
+	<sprites>
+		<sprite name="checkbutton" texture="gui/widget.png"><frame>346 0 32 32</frame></sprite>
+		<sprite name="checkbutton-hover" texture="gui/widget.png"><frame>346 32 32 32</frame></sprite>
+		<sprite name="checkbutton-checked" texture="gui/widget.png"><frame>346 64 32 32</frame></sprite>
+
+		<sprite name="buttonfill" texture="gui/widget.png"><frame>378 0 24 24</frame></sprite>
+		<sprite name="item-frame" texture="gui/widget.png"><frame>76 182 28 28</frame></sprite>
+
+		<sprite name="quality-frame" texture="gui/widget.png"><frame>410 66 14 14</frame></sprite>
+		<sprite name="quality-common" texture="gui/icons.png"><frame>193 57 10 10</frame></sprite>
+		<sprite name="quality-uncommon" texture="gui/icons.png"><frame>193 67 10 10</frame></sprite>
+		<sprite name="quality-rare" texture="gui/icons.png"><frame>193 77 10 10</frame></sprite>
+		<sprite name="quality-epic" texture="gui/icons.png"><frame>193 87 10 10</frame></sprite>
+		<sprite name="quality-legendary" texture="gui/icons.png"><frame>193 97 10 10</frame></sprite>
+
+		<sprite name="item-frames" texture="gui/playermenu.png"><frame>335 32 64 32</frame></sprite>
+		<sprite name="item-dot" texture="gui/icons.png"><frame>63 0 4 4</frame></sprite>
+		<sprite name="item-plus" texture="gui/icons.png"><frame>59 112 5 5</frame></sprite>
+
+		<sprite name="check-item" texture="gui/widget.png"><frame>410 80 16 16</frame></sprite>
+		<sprite name="check-item-hover" texture="gui/widget.png"><frame>426 80 16 16</frame></sprite>
+		<sprite name="check-item-checked" texture="gui/widget.png"><frame>442 80 16 16</frame></sprite>
+
+		<sprite name="wood" texture="gui/shop.png"><frame>0 53 200 72</frame></sprite>
+
+		<sprite name="icon-dice" texture="gui/icons_others.png"><frame>216 48 24 24</frame></sprite>
+		<sprite name="classbutton" texture="gui/widget.png"><frame>33 130 24 24</frame></sprite>
+
+%include "gui/closebutton_sprites.inc"
+%include "gui/scalablebutton_sprites.inc"
+%include "gui/scalablebutton_big_sprites.inc"
+%include "gui/scrollbar_sprites.inc"
+%include "gui/scalablebutton_sprites.inc"
+	</sprites>
+
+	<doc>
+		<group>
+			<rect width="320" height="194" anchor="0.5 0.5" spriteset="gui/variable/bigwindow_borders.sval">
+
+				
+
+				<!-- Content -->
+				<rect width="318" height="192" offset="2 2" flow="vbox">
+					<!-- Header -->
+					<rect width="318" height="18" flow="hbox">
+						<!-- Headline -->
+						<rect width="294" height="18" spriteset="gui/variable/headline_hor.sval">
+							<text font="gui/fonts/arial11_bold.fnt" text="Item trading" anchor="0.5 0.5" />
+						</rect>
+
+						<!-- Separator -->
+						<rect width="3" height="18" spriteset="gui/variable/3pxbar_vert.sval" />
+
+						<!-- Close button -->
+						<spritebutton func="close" spriteset="close" />
+					</rect>
+
+					<!-- Separator -->
+					<rect width="316" height="3" spriteset="gui/variable/3pxbar_hor.sval" />
+
+					<rect offset="200 0" shadow="#0c120fFF" width="116" height="170" flow="hbox" color="#202a26FF" shadow="#0c120fFF" shadowsize="2">
+						<!-- Player list -->
+						<scrollrect id="playerlist" flow="hboxwrapped" width="108" height="170" />
+
+						<!-- Scrollbar -->
+						<scrollbar forid="playerlist" spriteset="scrollbar" outside="true" buttons-size="14" trough-offset="18" handle-border="2" />
+					</rect>
+
+					<!-- Info field -->
+					<rect offset="0 -170" width="200" height="18" color="#202a26FF" shadow="#0c120fFF" shadowsize="2">
+						<rect width="70" height="18">
+							<text offset="2 0" font="gui/fonts/arial11.fnt" text="Select item and a player to give" />
+						</rect>
+					</rect>
+
+					<!-- Separator -->
+					<rect width="200" height="3" spriteset="gui/variable/3pxbar_hor.sval" />
+
+					<!-- Item list -->
+					<scrollrect id="list-items" flow="hboxwrapped" width="192" height="128" scroll-backdrop-sprite="item-frames" />
+
+					<!-- Scrollbar -->
+					<scrollbar forid="list-items" spriteset="scrollbar" outside="true" buttons-size="14" trough-offset="18" handle-border="2" />
+
+					<!-- Separator -->
+					<rect width="200" height="3" spriteset="gui/variable/3pxbar_hor.sval" />
+
+					<!-- Button bar -->
+					<rect width="200" height="18" flow="hbox">
+						<rect width="65" height="18" spriteset="gui/variable/headline_hor.sval" />
+
+						<!-- Close button -->
+						<scalebutton spriteset="scalebutton" width="70" font="gui/fonts/arial11.fnt" text=".itemdealer.close" func="close" />
+
+						<rect width="65" height="18" spriteset="gui/variable/headline_hor.sval" />
+					</rect>
+				</rect>
+
+				<!-- Item template -->
+				<checkbox id="template-item" visible="false" spriteset="check-item" func="item-checked">
+					<!-- Icon -->
+					<sprite id="item-icon" anchor="0.5 0.5" />
+
+					<!-- Attuned plus -->
+					<sprite id="item-attuned" offset="2 2" visible="false" src="item-plus" />
+
+					<!-- Set and quality dots -->
+					<group inner="true" anchor="1 1" offset="-2 -2" flow="hbox">
+						<sprite id="item-set" visible="false" src="item-dot" />
+						<sprite id="item-quality" visible="false" src="item-dot" />
+					</group>
+				</checkbox>
+
+				<!-- Player template -->
+				<scalebutton func="send-items" visible="false" id="player-template" spriteset="scalebutton" width="104" offset="3 5" font="gui/fonts/arial11.fnt" />
+			</rect>
+		</group>
+	</doc>
+</gui>
