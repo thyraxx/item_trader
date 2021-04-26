@@ -26,6 +26,7 @@ namespace ItemTradeHook
 
 		void Show() override
 		{
+			selectedItems.removeRange(0, selectedItems.length());
 			UpdatePlayerList();
 			ReloadItemList();
 
