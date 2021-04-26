@@ -47,11 +47,12 @@ namespace ItemTradeHook
 			{
 				auto wPlayer = cast<ScalableSpriteButtonWidget>(m_wPlayerTemplate.Clone());
 				wPlayer.SetID("player-" + i);
-				wPlayer.SetText("player-" + i);
+				wPlayer.m_func = "send-items " + i;
+
+				wPlayer.SetText(Lobby::GetPlayerName(i));
 				wPlayer.m_visible = true;
 
 				//UpdatePlayer(wPlayer, i);
-
 
 				m_wPlayerList.AddChild(wPlayer);
 			}
