@@ -1,10 +1,10 @@
 namespace ItemTradeHook
 {
+	Widget@ m_wItemList;
+	Widget@ m_wItemTemplate;
+
 	class ItemTrade : UserWindow
 	{
-		Widget@ m_wItemList;
-		Widget@ m_wItemTemplate;
-		
 		Widget@ m_wPlayerList;
 		ScalableSpriteButtonWidget@ m_wPlayerTemplate;
 		array<ActorItem> selectedItems;
@@ -18,16 +18,12 @@ namespace ItemTradeHook
 			@m_wPlayerList = m_widget.GetWidgetById("playerlist");
 			@m_wPlayerTemplate = cast<ScalableSpriteButtonWidget>(m_widget.GetWidgetById("player-template"));
 
-			auto gm = cast<Campaign>(g_gameMode);
-			auto record = GetLocalPlayerRecord();
-
 			ReloadItemList();
 			UpdateButton();
 		}
 
 		void Show() override
 		{
-			selectedItems.removeRange(0, selectedItems.length());
 			UpdatePlayerList();
 			ReloadItemList();
 
@@ -39,12 +35,11 @@ namespace ItemTradeHook
 			if (!Lobby::IsInLobby())
 				return;
 
-			int numPlayers = Lobby::GetLobbyPlayerCount();
-
-			//m_lastNumPlayers = numPlayers;
+			auto lpRecord = GetLocalPlayerRecord();
 
 			m_wPlayerList.ClearChildren();
 
+			int numPlayers = Lobby::GetLobbyPlayerCount();
 			for (int i = 0; i < numPlayers; i++)
 			{
 				auto wPlayer = cast<ScalableSpriteButtonWidget>(m_wPlayerTemplate.Clone());
@@ -52,9 +47,8 @@ namespace ItemTradeHook
 				wPlayer.m_func = "send-items " + i;
 
 				wPlayer.SetText(Lobby::GetPlayerName(i));
-				wPlayer.m_visible = true;
-
-				//UpdatePlayer(wPlayer, i);
+				//wPlayer.m_enabled = (i != lpRecord.peer);
+				wPlayer.m_visible = (i != lpRecord.peer);
 
 				m_wPlayerList.AddChild(wPlayer);
 			}
@@ -62,59 +56,67 @@ namespace ItemTradeHook
 
 		void UpdateButton()
 		{
-			int numSelected = 0;
+			selectedItems.removeRange(0, selectedItems.length());
 			for (uint i = 0; i < m_wItemList.m_children.length(); i++)
 			{
 				auto wItem = cast<CheckBoxWidget>(m_wItemList.m_children[i]);
+				auto item = g_items.GetItem(wItem.m_value);
 				if (wItem !is null && wItem.IsChecked())
 				{
-					numSelected++;
-					
+					selectedItems.insertLast(item);
 				}
 			}
 		}
 
-		void SendItems()
+		void SendItems(uint peer)
 		{
-			//auto item = g_items.GetItem(wItem.m_value);
-			//if (item is null)
-			//	return;
+			auto player = GetLocalPlayer();
 
-			//player.TakeItem(item);
-			//print(item.name);
-		}
-
-
-		void ReloadItemList(bool enabled = true)
-		{
-			m_wItemList.ClearChildren();
-
-			auto record = GetLocalPlayerRecord();
-			for (uint i = 0; i < record.items.length(); i++)
+			for(uint i = 0; i < selectedItems.length(); i++)
 			{
-				auto item = g_items.GetItem(record.items[i]);
-				if (item is null)
-				{
-					PrintError("Couldn't find item at index " + i);
-					continue;
-				}
+				auto item = selectedItems[i];
+				player.TakeItem(item);
 
-				auto wNewItem = cast<CheckBoxWidget>(AddActorItemToGuiList(record, m_wItemList, m_wItemTemplate, item));
-				if (wNewItem !is null)
-					wNewItem.m_enabled = enabled;
+				(Network::Message("GiveItemTrade") << item.id).SendToPeer(peer);
 			}
+
+			ReloadItemList();
+			UpdateButton();
+			player.RefreshModifiers();
 		}
 
 		void OnFunc(Widget@ sender, string name) override
 		{
-			if (name == "close")
+			string commandName = name.split(" ")[0];
+			if (commandName == "close")
 				Close();
-			else if(name == "send-items")
+			else if(commandName == "send-items")
 			{
-				SendItems();
+				uint peer = parseInt(name.split(" ")[1]);
+				SendItems(peer);
 			}
-			else if (name == "item-checked")
+			else if (commandName == "item-checked")
 				UpdateButton();
 		}
 	}
-}	
+
+	void ReloadItemList(bool enabled = true)
+	{
+		m_wItemList.ClearChildren();
+
+		auto record = GetLocalPlayerRecord();
+		for (uint i = 0; i < record.items.length(); i++)
+		{
+			auto item = g_items.GetItem(record.items[i]);
+			if (item is null)
+			{
+				PrintError("Couldn't find item at index " + i);
+				continue;
+			}
+
+			auto wNewItem = cast<CheckBoxWidget>(AddActorItemToGuiList(record, m_wItemList, m_wItemTemplate, item));
+			if (wNewItem !is null)
+				wNewItem.m_enabled = enabled;
+		}
+	}
+}
