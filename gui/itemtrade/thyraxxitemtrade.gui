@@ -38,8 +38,6 @@
 		<group>
 			<rect width="320" height="194" anchor="0.5 0.5" spriteset="gui/variable/bigwindow_borders.sval">
 
-				
-
 				<!-- Content -->
 				<rect width="318" height="192" offset="2 2" flow="vbox">
 					<!-- Header -->
@@ -61,7 +59,7 @@
 
 					<rect offset="200 0" shadow="#0c120fFF" width="116" height="170" flow="hbox" color="#202a26FF" shadow="#0c120fFF" shadowsize="2">
 						<!-- Player list -->
-						<scrollrect id="playerlist" flow="hboxwrapped" width="108" height="170" />
+						<scrollrect id="playerlist" flow="hboxwrapped" width="108" height="150" />
 
 						<!-- Scrollbar -->
 						<scrollbar forid="playerlist" spriteset="scrollbar" outside="true" buttons-size="14" trough-offset="18" handle-border="2" />
@@ -70,7 +68,7 @@
 					<!-- Info field -->
 					<rect offset="0 -170" width="200" height="18" color="#202a26FF" shadow="#0c120fFF" shadowsize="2">
 						<rect width="70" height="18">
-							<text offset="2 0" font="gui/fonts/arial11.fnt" text="Select item and a player to give" />
+							<text offset="4 1" font="gui/fonts/arial11.fnt" text="Select items, then click on a name" />
 						</rect>
 					</rect>
 
@@ -84,16 +82,16 @@
 					<scrollbar forid="list-items" spriteset="scrollbar" outside="true" buttons-size="14" trough-offset="18" handle-border="2" />
 
 					<!-- Separator -->
-					<rect width="200" height="3" spriteset="gui/variable/3pxbar_hor.sval" />
+					<rect width="316" height="3" spriteset="gui/variable/3pxbar_hor.sval" />
 
 					<!-- Button bar -->
 					<rect width="200" height="18" flow="hbox">
-						<rect width="65" height="18" spriteset="gui/variable/headline_hor.sval" />
+						<rect width="124" height="18" spriteset="gui/variable/headline_hor.sval" />
 
 						<!-- Close button -->
 						<scalebutton spriteset="scalebutton" width="70" font="gui/fonts/arial11.fnt" text=".itemdealer.close" func="close" />
 
-						<rect width="65" height="18" spriteset="gui/variable/headline_hor.sval" />
+						<rect width="124" height="18" spriteset="gui/variable/headline_hor.sval" />
 					</rect>
 				</rect>
 
