@@ -1,0 +1,15 @@
+<!--
+    Unreliable
+    UnreliableSequenced
+    ReliableUnordered
+    ReliableSequenced
+    ReliableOrdered
+-->
+
+<network>
+
+    <message name="GiveItemTrade" namespace="ItemTradeHook" delivery="ReliableOrdered">
+        <string /> <!-- Item -->
+    </message>
+
+</network>
